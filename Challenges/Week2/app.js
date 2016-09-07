@@ -9,8 +9,5 @@ function parseResponse( response ) {
   return reply;
 }
 
-//Prompt user for input and store variable
-//var userResponse = prompt( "Hello!" );
-
-//Call function and alert user results
+//Prompt user for input, parse and respond
 alert ( parseResponse( prompt("Hello").toLowerCase() ) );
