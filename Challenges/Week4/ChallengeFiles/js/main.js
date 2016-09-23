@@ -6,11 +6,8 @@ function openBlock (id) {
         blocks[y].style.display = "none";
     }
     block.style.display = "block";
-
-    // TODO: remove the "active" class from all of the li elements inside the menu
-    // TODO: add the "active" class to the li element that contains the link that was clicked
-
 }
+
 //Set click handlers for menu items
 var menuItem;
 $("#menu li a").each( function() {
