@@ -21,6 +21,24 @@ var https = require("https");
 var http = require("http");
 var util = require("util");
 
+function displayData(username, data) {
+  console.log('Username:');
+  console.log(username);
+  console.log('Repositories:');
+  data.forEach( function(item) {
+    var consoleString = item.name;
+    //check for description
+    if (item.description != '') {
+      consoleString += ' -- ' + item.description;
+    }
+    //see if forked
+    if (item.fork) {
+      consoleString += ' -- Forked';
+    }
+    console.log(consoleString);
+  });
+}
+
 function getRepos(username) {
 
     EventEmitter.call(this);
@@ -42,13 +60,12 @@ function getRepos(username) {
         if (response.statusCode !== 200) {
             request.abort();
             //Status Code Error
-            reposEmitter.emit("error", new Error("There was an error getting the repos for " + username + ". (" + http.STATUS_CODES[response.statusCode] + ")"));
+            console.log("There was an error getting the repos for " + username + ". (" + http.STATUS_CODES[response.statusCode] + ")");
         }
 
         //Read the data
         response.on('data', function (chunk) {
             body += chunk;
-            reposEmitter.emit("data", chunk);
         });
 
         response.on('end', function () {
@@ -56,15 +73,14 @@ function getRepos(username) {
                 try {
                     //Parse the data
                     var repos = JSON.parse(body);
-                    reposEmitter.emit("end", repos);
+                    //Display the data
+                    displayData(username, repos);
                 } catch (error) {
-                    reposEmitter.emit("error", error);
-                    console.log("there was an error");
+                  console.log("There was an error");
                 }
             }
         }).on("error", function(error){
-            reposEmitter.emit("error", error);
-            console.log("there was an error");
+            console.log("There was an error");
         });
     });
 
